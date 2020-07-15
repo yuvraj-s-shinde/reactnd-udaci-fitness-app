@@ -7,9 +7,9 @@ import { createStore } from 'redux'
 import reducer from './reducers'
  
 export default class App extends React.Component {
-  // componentDidMount () {
-  //     debugger
-  // }
+  componentDidMount () {
+      debugger
+  }
   render() {
     return (
       <Provider store={createStore(reducer)}>

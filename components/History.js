@@ -12,7 +12,7 @@ import { AppLoading } from 'expo'
 
 class History extends Component {
   state = {
-      ready: False
+      ready: false
   }
   
   componentDidMount () {
