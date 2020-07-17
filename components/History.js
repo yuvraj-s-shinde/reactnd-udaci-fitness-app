@@ -6,8 +6,8 @@ import { timeToString, getDailyReminderValue } from '../utils/helpers'
 import { fetchCalendarResults } from '../utils/api'
 import DateHeaders from './DateHeaders'
 import MetricCard from './MetricCard'
-import UdaciFitnessCalendar from 'udacifitness-calendar-fix'
-// import {Calendar as UdaciFitnessCalendar } from 'react-native-calendars'
+// import UdaciFitnessCalendar from 'udacifitness-calendar-fix'
+import {Agenda as UdaciFitnessCalendar } from 'react-native-calendars'
 import { AppLoading } from 'expo'
 
 class History extends Component {
@@ -29,6 +29,7 @@ class History extends Component {
       })
       .then(() => this.setState(() => ({ready: true})))
   }
+
   renderItem = ({ today, ...metrics }, formattedDate, key) => (
     <View style={styles.item}>
       {today
@@ -43,6 +44,19 @@ class History extends Component {
             </TouchableOpacity>}
     </View>
   )
+
+  // renderItem = ({today, ...metrics}, formattedDate, key) => {
+  //   console.log("renderItem was called")
+  //   return (
+  //       <View>
+  //           {today
+  //               ? <Text>today: {JSON.stringify(today)}</Text>
+  //               : <Text>metrics: {JSON.stringify(metrics)}</Text>
+  //           }
+  //       </View>
+  //   )
+  // }
+
   renderEmptyDate(formattedDate) {
     return (
         <View>
@@ -65,6 +79,7 @@ class History extends Component {
         items={entries}
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}
+        style={{marginTop:50}}
       />
     )
   }

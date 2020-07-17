@@ -17,14 +17,14 @@ function setDummyData () {
     const time = timestamp + i * 24 * 60 * 60 * 1000
     const strTime = timeToString(time)
     dummyData[strTime] = getRandomNumber(3) % 2 === 0
-      ? {
+      ? [{
           run: getRandomNumber(run.max),
           bike: getRandomNumber(bike.max),
           swim: getRandomNumber(swim.max),
           sleep: getRandomNumber(sleep.max),
           eat: getRandomNumber(eat.max),
-        }
-      : null
+        }]
+      : new Array()
   }
 
   AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(dummyData))
