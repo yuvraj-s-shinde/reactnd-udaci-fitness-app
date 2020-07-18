@@ -10,6 +10,7 @@ import { submitEntry, removeEntry } from '../utils/api'
 import { connect } from 'react-redux'
 import { addEntry } from '../actions'
 import { purple, white } from '../utils/colors'
+import { NavigationActions } from 'react-navigation'
 
 const SubmitBtn = ({ onPress }) => {
         return(
@@ -104,9 +105,13 @@ class AddEntry extends Component {
         }))
     }
 
+    toHome = () => {
+        this.props.navigation.goBack()
+    }
+
     submit = () => {
         const key = timeToString()
-        const entry = this.state
+        const entry = [this.state]
 
         // update redux
         this.props.dispatch(addEntry({
@@ -121,6 +126,7 @@ class AddEntry extends Component {
             eat: 0
         })
         // navigate to home
+        this.toHome()
 
         // save to db
         submitEntry({key, entry})
@@ -187,7 +193,7 @@ class AddEntry extends Component {
 function mapStateToProps(state) {
     const key = timeToString()
     return {
-        alreadyLogged: state[key] && typeof state[key].today === "undefined"
+        alreadyLogged: state[key][0] && typeof state[key][0].today === "undefined"
     }
 }
 

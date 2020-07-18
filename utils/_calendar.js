@@ -41,7 +41,7 @@ function setMissingDates (dates) {
     const strTime = timeToString(time)
 
     if (typeof dates[strTime] === 'undefined') {
-      dates[strTime] = null
+      dates[strTime] = new Array()
     }
   }
 

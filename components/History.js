@@ -6,13 +6,17 @@ import { timeToString, getDailyReminderValue } from '../utils/helpers'
 import { fetchCalendarResults } from '../utils/api'
 import DateHeaders from './DateHeaders'
 import MetricCard from './MetricCard'
+import EntryDetail from './EntryDetail'
 // import UdaciFitnessCalendar from 'udacifitness-calendar-fix'
 import {Agenda as UdaciFitnessCalendar } from 'react-native-calendars'
 import { AppLoading } from 'expo'
 
+
+
 class History extends Component {
   state = {
-      ready: false
+      ready: false,
+      selectedDate: new Date().toISOString().slice(0,10),
   }
   
   componentDidMount () {
@@ -30,37 +34,32 @@ class History extends Component {
       .then(() => this.setState(() => ({ready: true})))
   }
 
-  renderItem = ({ today, ...metrics }, formattedDate, key) => (
+  renderItem = (dateKey, { today, ...metrics }, firstItemInDay) => (
     <View style={styles.item}>
       {today
         ? <View>
-            <DateHeaders date={formattedDate} />
+            {/* <DateHeaders date={formattedDate} /> */}
             <Text style={styles.noDataText}>
                 {today}
             </Text>
         </View>
-        : <TouchableOpacity onPress={()=> console.log("Pressed!")}>
-                <MetricCard date={formattedDate} metrics={metrics} />
+        : <TouchableOpacity onPress={()=> this.props.navigation.navigate('Entry Detail',
+        { entryId: dateKey })}>
+                <MetricCard metrics={metrics} />
             </TouchableOpacity>}
     </View>
   )
 
-  // renderItem = ({today, ...metrics}, formattedDate, key) => {
-  //   console.log("renderItem was called")
-  //   return (
-  //       <View>
-  //           {today
-  //               ? <Text>today: {JSON.stringify(today)}</Text>
-  //               : <Text>metrics: {JSON.stringify(metrics)}</Text>
-  //           }
-  //       </View>
-  //   )
-  // }
+  onDayPress = (day) => {
+    this.setState({
+      selectedDate: day.dateString
+    })
+  };
 
-  renderEmptyDate(formattedDate) {
+  renderEmptyDate() {
     return (
         <View>
-        <DateHeaders date={formattedDate} />
+        {/* <DateHeaders date={formattedDate} /> */}
         <Text style={styles.noDataText}>
             You didn't log any data on this day.
         </Text>
@@ -69,17 +68,19 @@ class History extends Component {
   }
   render() {
     const { entries } = this.props
-    const { ready } = this.state
+    const { ready, selectedDate } = this.state
     if (ready === false) {
         return <AppLoading />
     }
 
+
+
     return (
       <UdaciFitnessCalendar
         items={entries}
-        renderItem={this.renderItem}
+        onDayPress={this.onDayPress}
+        renderItem={(item, firstItemInDay) => this.renderItem(selectedDate, item, firstItemInDay)}
         renderEmptyDate={this.renderEmptyDate}
-        style={{marginTop:50}}
       />
     )
   }
